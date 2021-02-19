@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     // Tip: private variables should start with an _
     [SerializeField]
     private float _speed = 0.0f;
+    [SerializeField]
+    private Transform lazerPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -21,11 +23,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        transform.Translate(Vector3.right * Input.GetAxis("Horizontal") * _speed * Time.deltaTime);
-        transform.Translate(Vector3.up * Input.GetAxis("Vertical") * _speed * Time.deltaTime);
-        */
+        CalculateMovement();
 
+        if ( Input.GetKey(KeyCode.Space) ) 
+        {
+            Debug.Log("Fire");
+        }
+    }
+
+    void CalculateMovement()
+    {
         // Example of a optimized oneliner making future garbage collection easier
         transform.Translate(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * _speed * Time.deltaTime);
 
@@ -33,7 +40,7 @@ public class Player : MonoBehaviour
         // Simply based on cords as veiwed from camera in editor
         if (transform.position.y >= 0)
         { transform.position = new Vector3(transform.position.x, 0, 0); }
-        else if (transform.position.y >= -3.0f)
+        else if (transform.position.y <= -3.0f)
         { transform.position = new Vector3(transform.position.x, -3.0f, 0); }
 
         if (transform.position.x >= 10.0f)
